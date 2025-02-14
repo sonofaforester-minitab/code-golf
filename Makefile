@@ -38,6 +38,10 @@ db-dump:
 
 	@zcat sql/*.gz | zstd -fqo ~/Dropbox/code-golf/code-golf-$(DATE).sql.zst
 
+minitab:
+	@docker buildx build -f docker/live.Dockerfile -t sonofaforesterminitab/code-golf .
+	@docker push sonofaforesterminitab/code-golf
+
 dev:
 	@touch docker/.env
 	@docker compose rm -f
@@ -86,7 +90,7 @@ lint:
 
 # Calls "make logs" at the end to make sure we didn't break the site.
 live:
-	@docker buildx build --pull --push \
+	@docker buildx build --pull \
 	    --file docker/live.Dockerfile --tag codegolf/code-golf .
 
 	@ssh root@code.golf "                                        \
